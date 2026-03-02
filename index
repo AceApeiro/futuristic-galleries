@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futuristic Galleries</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #0d0d0d;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      padding: 20px;
+      font-size: 2.5em;
+      color: #00fff7;
+      text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7;
+    }
+    .gallery-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+    }
+    .gallery-container img {
+      width: 180px;
+      height: 120px;
+      object-fit: cover;
+      border: 2px solid #00fff7;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .gallery-container img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #00fff7;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      padding-top: 60px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.95);
+    }
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      border: 2px solid #00fff7;
+      border-radius: 10px;
+      animation: zoom 0.4s;
+    }
+    @keyframes zoom {
+      from {transform: scale(0)}
+      to {transform: scale(1)}
+    }
+    .close {
+      position: absolute;
+      top: 30px;
+      right: 35px;
+      color: #00fff7;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .close:hover {
+      color: #ff00ff;
+    }
+    .gallery-title {
+      width: 100%;
+      text-align: center;
+      font-size: 1.5em;
+      margin-top: 40px;
+      color: #ff00ff;
+      text-shadow: 0 0 10px #ff00ff;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Futuristic Image Galleries</h1>
+
+<!-- Gallery 1 -->
+<div class="gallery-title">Gallery 1</div>
+<div class="gallery-container" id="gallery1"></div>
+
+<!-- Gallery 2 -->
+<div class="gallery-title">Gallery 2</div>
+<div class="gallery-container" id="gallery2"></div>
+
+<!-- Gallery 3 -->
+<div class="gallery-title">Gallery 3</div>
+<div class="gallery-container" id="gallery3"></div>
+
+<!-- Gallery 4 -->
+<div class="gallery-title">Gallery 4</div>
+<div class="gallery-container" id="gallery4"></div>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="modal-img">
+</div>
+
+<script>
+  const galleries = {
+    gallery1: [
+      "1G1EzDxM4NgbDkHc6ykH1EFJwmlKERpQJ","17Wa9fOL0IERdZnxTrY1uXB7YBW1toFjY",
+      "1N3U2aqkICzpjzXuNlxEko7XaLTygqs0q","1dH-tyPNwAB3HdfZBrRXC346LaLiiJ5qX",
+      "1GpJ9BJh_ec82D44of4EMylq9TIlVihL","1uj2G84EJyj4q17XJM6o-4LyfAdplJp4G",
+      "1wycK0zyPb4Swf1bIplj1JGF7WteWNUR0","1fSPEakBSJeZAFHhlrfrTwG8smWbZeRD2",
+      "1OeoeqRz4cFbnwuUOcVIVwZwb4_mF3RMg","1A-qApCLAmVsieOWMDRYUnGOVCJQSepVd",
+      "1n_hKmp2vGWCfTsImTgv2X-aRyWLolZ3O","13HO-nCGtRig0p3YdrQAaiG0fstIdJJr9",
+      "1pK0ImQZ3YDreMa_EN1nTwHxSoZ141C-Z","14KqQhV1dJXCLuRXNqoy_9KwnYLJoA-K_",
+      "1yAKBcgNJbRsRucSg37BPlzvv3jUsB9k-","1r41_Na4S_VjOWLZRB5-XUAcgOswlURqF",
+      "1KUyRv8MkqK1wecgFf-Ib-RHc2-6u-vmd","1JQayOvdXQdZSmBhqPvmel7ycTxDEJB1"
+    ],
+    gallery2: [
+      "1Y91ZvloZqJGEMdAoxhOrHtsH_zB2-Bj2","1E0y1_uxHam_8fVni1M-zmzdX93pie26x",
+      "1woGgxXAkePVVr64MuBtkNFM78wxWtzJ6","1z2jQ9knndqXi2nWxaq8A2l71tYEZ7GRx",
+      "1IDMudTP72K_xFjadi1ot3bXDcynDyxV6","1sxPppyNIIFklPwx5fYRbyLfi2XRnuCQg",
+      "15KIC22BC2-dYUXJnEXxFjn7Dj6aG1j86","1tFulfBLq7xO6jpw-kgE_E528IIin_i-Z"
+    ],
+    gallery3: [
+      "1dxIdjX8hMg4t4tmwbCsbs3KCSqK0Y4B3","1t0gNR_jzarKILLNZMYpSHcjuy-BlbXjC",
+      "1y-tzu31P4OShBvxHY5rc5_yvp0NznBvG","1yYtDi-j-4Oe-mV2mfT7UK97d8kOpv3c5",
+      "1Xfhc0ooU9sVy2uWngPnWnVrhL3XTfZiI","1x5lJ4625mnhXLEWbIPT3Gc0_dG8JW6G_",
+      "1kGCqC9wixxIsN0J-DUztbwSvODMR9IdR","1eM15gSjxcUlDaFA1o1OicT3FOuq8Lxy_"
+    ],
+    gallery4: [
+      "1n8-2HdqYFyM2bAQ2C5chaXcmxXofghaP","15I6t74mtxbF7sTlCDcfERMcviyrXVXwJ",
+      "1KWqpeO8OyogFAp87C5p8c_mg8T49Y6Bc","1NHswi6B24Gxae3YH4mC6OHU6A0CjHSrr",
+      "1sbH_h_TTqyeRt7yQRhviT9BcikUkskmF","1x14V_ONgPQWXFcNom_4DjQNb0jRoFiMI",
+      "1RKhiALQDQEW8JIRpSMcG9KAQxXMOoyHY","1RZY_Vtqo27qWtCiSKmhKMY5duNyxXMQ1"
+    ]
+  };
+
+  function populateGallery(galleryId, imageIds) {
+    const container = document.getElementById(galleryId);
+    imageIds.forEach(id => {
+      const img = document.createElement('img');
+      img.src = `https://drive.google.com/uc?export=view&id=${id}`;
+      img.alt = `Image ${id}`;
+      img.onclick = () => openModal(img.src);
+      container.appendChild(img);
+    });
+  }
+
+  Object.keys(galleries).forEach(g => populateGallery(g, galleries[g]));
+
+  const modal = document.getElementById("modal");
+  const modalImg = document.getElementById("modal-img");
+  const closeBtn = document.getElementsByClassName("close")[0];
+
+  function openModal(src) {
+    modal.style.display = "block";
+    modalImg.src = src;
+  }
+  closeBtn.onclick = () => modal.style.display = "none";
+  window.onclick = e => { if (e.target === modal) modal.style.display = "none"; }
+</script>
+
+</body>
+</html>
